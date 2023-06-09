@@ -5,9 +5,11 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "3025:2025"
+      - "3025:3025"
   postgres:
     image: postgres:latest
+    ports:
+      - "5432:5432"
     volumes:
       - ./data/postgres:/var/lib/postgresql/data
     environment:
