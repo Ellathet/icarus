@@ -9,5 +9,6 @@ import { Certificate } from './entities/certificate.entity';
   imports: [SequelizeModule.forFeature([Certificate]), FileModule],
   controllers: [CertificateController],
   providers: [CertificateService],
+  exports: [CertificateService],
 })
 export class CertificateModule {}

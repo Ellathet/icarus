@@ -13,6 +13,13 @@ export class FileService {
     await fs.promises.unlink(this.PATH_TO_TEMP + fileName);
   }
 
+  async renameFile(fileName: string, newFileName: string) {
+    await fs.promises.rename(
+      this.PATH_TO_TEMP + fileName,
+      this.PATH_TO_TEMP + newFileName,
+    );
+  }
+
   verifyFileExists(fileName: string) {
     return fs.existsSync(this.PATH_TO_TEMP + fileName);
   }

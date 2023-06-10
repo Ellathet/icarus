@@ -6,7 +6,11 @@ export class CryptoService {
     32,
   );
 
-  private initVector = crypto.randomBytes(16);
+  private initVector = Buffer.concat(
+    [Buffer.from(process.env.HASH_INIT_VECTOR || 'tesla')],
+    16,
+  );
+
   private algorithm = 'aes-256-cbc';
 
   encrypt(plainText: string): string {
@@ -16,22 +20,22 @@ export class CryptoService {
       this.initVector,
     );
 
-    let encryptedData = cipher.update(plainText, 'utf-8', 'hex');
-    encryptedData += cipher.final('hex');
-
-    return encryptedData;
+    return Buffer.from(
+      cipher.update(plainText, 'utf8', 'hex') + cipher.final('hex'),
+    ).toString('base64');
   }
 
   decrypt(encryptedText: string): string {
+    const buff = Buffer.from(encryptedText, 'base64');
     const decipher = crypto.createDecipheriv(
       this.algorithm,
       this.hashSecurityBuffer,
       this.initVector,
     );
 
-    let decryptedData = decipher.update(encryptedText, 'hex', 'utf-8');
-    decryptedData += decipher.final('utf-8');
-
-    return decryptedData;
+    return (
+      decipher.update(buff.toString('utf8'), 'hex', 'utf8') +
+      decipher.final('utf8')
+    );
   }
 }

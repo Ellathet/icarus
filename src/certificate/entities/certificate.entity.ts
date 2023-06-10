@@ -57,7 +57,7 @@ export class Certificate extends Model {
   @BeforeCreate
   static hashPassword(instance: Certificate) {
     const crypto = new CryptoService();
-    instance.password = crypto.encrypt(instance.password);
+    instance.dataValues.password = crypto.encrypt(instance.dataValues.password);
   }
 
   @CreatedAt
